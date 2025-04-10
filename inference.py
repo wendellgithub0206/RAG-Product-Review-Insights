@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import pandas as pd
-from transformers import AutoModelForSequenceClassification,AutoTokenizer,pipeline
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 from tqdm import tqdm
 
 def load_model_and_predict(

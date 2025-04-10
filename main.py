@@ -6,7 +6,7 @@ from inference import load_model_and_predict
 from analysis import analyze_cleaned_df
 
 def main():
-    data_dir = "./data/tokenized_amazon"
+    data_dir = "./data/tokenized_amazon_sentiment"
     model_dir = "./model_output"
 
     #1. 載入儲存的 tokenized dataset 和 tokenizer
@@ -16,7 +16,7 @@ def main():
 
     #2. 載入清洗過的原始資料，供分析使用
     print("資料分析")
-    df = pd.read_csv(f"{data_dir}/cleaned_reviews.csv")
+    df = pd.read_csv(f"{data_dir}/cleaned_reviews_sentiment.csv")
     analyze_cleaned_df(df)
 
     #3. 訓練情感分析模型

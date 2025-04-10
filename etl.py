@@ -86,7 +86,7 @@ def save_tokenized(df, model_name="bert-base-uncased", save_dir="./data/tokenize
     tokenizer.save_pretrained(save_dir)
 
     # 儲存資料
-    df.to_csv(os.path.join(save_dir, "reviews_sentiment.csv"), index=False)
+    df.to_csv(os.path.join(save_dir, "cleaned_reviews_sentiment.csv"), index=False)
 
     print(f"所有資料儲存完成：{save_dir}")
 
