@@ -13,6 +13,10 @@ def label(rating):
         return "Neutral"  # 中立
     else:
         return "Positive"  # 正面
+def label2id(df):
+    label_map = {"Negative": 0, "Neutral": 1, "Positive": 2}
+    df["label"] = df["label"].map(label_map)
+    return df
 
 def load_amazon_reviews(categories=("Appliances", "Electronics"), sample_size=80000):
     all_reviews = []
@@ -110,14 +114,15 @@ def labels_downsampling(df):
     return balanced_df
 
 if __name__ == "__main__":
-    # 1.讀取資料
+    #1.讀取資料
     df = load_amazon_reviews(sample_size=80000)
-
-    # 2.先儲存RAG資料集（原始評論，不合併）才不會因為下採樣減少資料
+    #2.label轉id
+    df = label2id(df)
+    #3. 先儲存RAG資料集（原始評論，不合併）才不會因為下採樣減少資料
     save_rag(df)
-    # 下採樣
+    #下採樣
     df = labels_downsampling(df)
-    # 3.儲存情緒分類資料集
+    #4. 儲存情緒分類資料集
     save_tokenized(df)
 
   
