@@ -7,21 +7,22 @@ This project analyzes product reviews using sentiment analysis and Retrieval-Aug
 
 The project uses the [**Amazon Reviews 2023**](https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023) dataset from Hugging Face.
 
-## Technologies Used
+## Technologies
 
-### ETL (Extract, Transform, Load)
-- **Data Extraction**: The project extracts data from the **Amazon Reviews 2023** dataset, which includes user reviews and product metadata.
-- **Data Transformation**: The reviews are cleaned, filtered (e.g., removing short reviews), and transformed into a structured format for sentiment analysis and RAG.
-- **Data Loading**: Transformed data is saved in CSV format and tokenized for machine learning and RAG processes.
+### 1. ETL
+- Extracts raw review data.
+- Transforms reviews (removes short texts, filters necessary data, maps ratings to sentiment).
+- Loads the data for tokenization and sentiment analysis.
 
-### RAG (Retrieval-Augmented Generation)
-- **Retrieval**: RAG is used to retrieve the most relevant product reviews based on a user's query (e.g., "Which TV is better?").
-- **Augmentation**: RAG augments the retrieval process with additional context, providing summarized insights from top reviews for each sentiment category (positive, neutral, and negative).
+### 2. Machine Learning (BERT)
+- Trains a sentiment classification model on product reviews to predict sentiment (positive, neutral, negative).
 
-### Machine Learning (Sentiment Analysis)
-- **Sentiment Classification Model**: A **BERT-based** model is trained to classify reviews into **Positive**, **Neutral**, or **Negative** sentiments. This model is fine-tuned using the Amazon Reviews dataset and used to analyze the sentiment of each review.
-- **Training**: The model is trained on the preprocessed review dataset and evaluated for accuracy, F1 score, and other metrics.
+### 3. RAG (Retrieval-Augmented Generation)
+- Retrieves relevant products based on user queries.
+- Performs sentiment analysis on the top reviews.
+- Summarizes the sentiment distribution and top reviews for each product.
 
-### AI (GPT-3 for Summarization)
-- **Summarization**: GPT-3 is used to generate summaries of the top reviews for each product. These summaries focus on the main points mentioned in the positive, neutral, and negative reviews.
-- **Query Handling**: GPT-3 also helps to refine responses based on user queries, generating meaningful insights from the retrieved reviews.
+### 4. AI (GPT-3)
+- Uses GPT-3 to generate summaries of the top reviews for each product, summarizing key points for positive, neutral, and negative sentiments.
+
+
