@@ -4,7 +4,7 @@ import os
 import json
 import numpy as np
 import torch
-from transformers import AutoModelForSequenceClassification,TrainingArguments,Trainer,EarlyStoppingCallback
+from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer, EarlyStoppingCallback
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 def set_seed(seed=42):
@@ -13,7 +13,7 @@ def set_seed(seed=42):
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
 
-def metrics(pred):
+def compute_metrics(pred):
     labels = pred.label_ids
     preds = pred.predictions.argmax(-1)
     precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='weighted')
@@ -40,11 +40,14 @@ def train_and_save_model(
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"使用裝置: {device}")
-
+    label2id = {"Negative": 0, "Neutral": 1, "Positive": 2}
+    id2label = {v: k for k, v in label2id.items()}
     print(f"載入預訓練模型 {model_name}...")
     model = AutoModelForSequenceClassification.from_pretrained(
         model_name,
-        num_labels=3
+        num_labels=3,
+        id2label=id2label,
+        label2id=label2id
     ).to(device)
 
     training_args = TrainingArguments(
@@ -68,7 +71,7 @@ def train_and_save_model(
         train_dataset=tokenized_dataset["train"],
         eval_dataset=tokenized_dataset["test"],
         tokenizer=tokenizer,
-        metrics=metrics,
+        compute_metrics=compute_metrics,
         callbacks=[EarlyStoppingCallback(early_stopping_patience=early_stopping_patience)]
     )
 
@@ -86,7 +89,7 @@ def train_and_save_model(
     tokenizer.save_pretrained(model_save_path)
     print(f"模型訓練完成並保存至: {model_save_path}")
 
-    
+
     with open(os.path.join(output_dir, "eval_results.json"), "w") as f:
         json.dump(eval_results, f, indent=4)
 
